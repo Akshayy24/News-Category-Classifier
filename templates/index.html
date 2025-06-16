@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>News Category Classifier</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to right, #f8f9fa, #e3f2fd);
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .container {
+            margin-top: 80px;
+            max-width: 700px;
+        }
+        textarea {
+            height: 200px;
+        }
+    </style>
+</head>
+<body>
+<div class="container text-center">
+    <h1 class="mb-4">📰 News Category Classifier</h1>
+    <form method="post">
+        <div class="form-group mb-3">
+            <textarea name="description" class="form-control form-control-lg" placeholder="Paste the news article description here..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg">Predict Category</button>
+    </form>
+
+    {% if category %}
+        <div class="card text-white bg-success mt-5">
+            <div class="card-body">
+                <h5 class="card-title">Predicted Category</h5>
+                <p class="card-text fs-4">{{ category }}</p>
+            </div>
+        </div>
+    {% endif %}
+</div>
+</body>
+</html>
