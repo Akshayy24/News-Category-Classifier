@@ -30,13 +30,18 @@ def clean_text(text):
 @app.route('/', methods=['GET', 'POST'])
 def index():
     category = None
+    error=None
     if request.method == 'POST':
         description = request.form['description']
-        cleaned = clean_text(description)
-        vect = vectorizer.transform([cleaned])
-        prediction = model.predict(vect)[0]
-        category = prediction
-    return render_template('index.html', category=category)
+        word_count=len(description.strip().split())
+        if word_count<50:
+            error="Please enter atleast 50 words"
+        else:
+            cleaned = clean_text(description)
+            vect = vectorizer.transform([cleaned])
+            prediction = model.predict(vect)[0]
+            category = prediction
+    return render_template('index.html', category=category,error=error)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=10000)
