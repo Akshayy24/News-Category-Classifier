@@ -6,6 +6,7 @@ import string
 import nltk
 nltk.download('stopwords')
 from nltk.corpus import stopwords
+import re
 
 app=Flask(__name__)
 
@@ -27,13 +28,29 @@ def clean_text(text):
     text = ' '.join([word for word in text.split() if word not in stop_words])
     return text
 
+def check_special_char(text):
+    limit=2
+    special_chars = set(re.findall(r'[^\w\s]', text))  # get unique special characters
+    for char in special_chars:
+        pattern = rf'({re.escape(char)}[\s]*){{{limit},}}'
+        if re.search(pattern, text):
+            return True
+    return False
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     category = None
     error=None
+    description=''
     if request.method == 'POST':
         description = request.form['description']
-        word_count=len(description.strip().split())
+        spam_match=check_special_char(description)
+        if spam_match:
+            error="Please avoid using too much special characters"
+            return render_template('index.html', category=category,error=error,description=description)
+        words=re.sub(r'[^a-zA-Z\s]','',description)
+        words=words.strip().split()
+        word_count=len(words)
         if word_count<50:
             error="Please enter atleast 50 words"
         else:
@@ -41,7 +58,7 @@ def index():
             vect = vectorizer.transform([cleaned])
             prediction = model.predict(vect)[0]
             category = prediction
-    return render_template('index.html', category=category,error=error)
+    return render_template('index.html', category=category,error=error,description=description)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=10000)

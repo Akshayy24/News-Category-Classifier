@@ -10,8 +10,9 @@
             font-family: 'Segoe UI', sans-serif;
         }
         .container {
-            margin-top: 80px;
+            margin-top: 30px;
             max-width: 700px;
+            padding-bottom: 50px;
         }
         textarea {
             height: 200px;
@@ -27,14 +28,16 @@
     </p>
     <form method="post">
         <div class="form-group mb-3">
-            <textarea name="description" class="form-control form-control-lg" placeholder="Paste the news article description here..." required></textarea>
+            <textarea name="description" class="form-control form-control-lg" placeholder="Paste the news article description here..." required>{{description}}</textarea>
         </div>
-        <button type="submit" class="btn btn-primary btn-lg">Predict Category</button>
+        <div class="d-grid gap-2 d-md-block">
+            <button type="submit" class="btn btn-primary btn-lg w-100 w-md-auto mb-5">Predict Category</button>
+        </div>
     </form>
     {% if error %}
             <p style="color: red;">{{ error }}</p>
     {% endif %}
-    
+
     {% if category %}
         <div class="card text-white bg-success mt-5">
             <div class="card-body">
